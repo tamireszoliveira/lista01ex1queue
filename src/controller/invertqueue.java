@@ -12,8 +12,11 @@ public class invertqueue{
 	}
 	public class Fila<T>{
 		private No<T> inicio, fim;
+		private int size;
 		public Fila() {
 			this.inicio = this.fim = null;
+			this.size = 0;
+
 		}
 		
 		public void insert(T dado) {
@@ -23,8 +26,8 @@ public class invertqueue{
 			} else {
 				fim.proximo = elemento;
 				fim = elemento;
-				
 			}
+			size++;
 		}
 		public T remove() {
 			if(inicio == null) {
@@ -35,11 +38,16 @@ public class invertqueue{
 			if(inicio == null) {
 				fim = null;
 			}
+			size--;
 			return dado;
 		}
 		
 		public boolean isEmpty() {
 			return inicio == null;
+		}
+		
+		public int queuesize() {
+			return size;
 		}
 		
 		public void print() {
@@ -55,13 +63,20 @@ public class invertqueue{
 			Fila<T> filaux = new Fila<>();
 			// transferindo elementos para a fila aux
 			while(!isEmpty()) {
-				filaux.insert(remove());
-			}
+				T dado = remove();
+				// nova auxiliar
+				Fila<T> aux2 = new Fila<>();
+				aux2.insert(dado);
 			
-			// realocando elementos da aux pra original
+			while(!filaux.isEmpty()) {
+				aux2.insert(filaux.remove());
+			}
+				filaux = aux2;
+			}
 			while(!filaux.isEmpty()) {
 				insert(filaux.remove());
 			}
 		}
 	}
 }
+
